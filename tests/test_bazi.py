@@ -17,3 +17,20 @@ def test_jiazi_cycle_has_unique_names():
 	names = [pillar.name for pillar in JIAZI_CYCLE]
 
 	assert len(names) == len(set(names))
+from datetime import timedelta
+
+from bazi_engine.solar_calendar import get_solar_term_moment
+from bazi_engine.year import get_bazi_year
+
+
+def test_bazi_year_changes_at_lichun():
+    lichun = get_solar_term_moment(
+        "立春",
+        2026,
+    ).moment_utc
+
+    before_lichun = lichun - timedelta(seconds=1)
+    after_lichun = lichun + timedelta(seconds=1)
+
+    assert get_bazi_year(before_lichun) == 2025
+    assert get_bazi_year(after_lichun) == 2026
